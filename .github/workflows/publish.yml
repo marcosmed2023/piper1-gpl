@@ -1,59 +1,7 @@
----
-name: Release (PyPI + GitHub)
-
-on:
-  workflow_dispatch:
-  push:
-    tags:
-      - "v*.*.*" # e.g. v1.2.3
-
-jobs:
-  version:
-    runs-on: ubuntu-latest
-    outputs:
-      tag: ${{ steps.v.outputs.tag }}
-      file_ver: ${{ steps.v.outputs.file_ver }}
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Read version + verify tag
-        id: v
-        shell: python
-        run: |
-          import os, re, pathlib, sys
-
-          text = pathlib.Path("setup.py").read_text(encoding="utf-8")
-          m = re.search(r"version\s*=\s*['\"]([^'\"]+)['\"]", text)
-          if not m:
-              raise SystemExit("Version not found in setup.py")
+SystemExit("Version not found in setup.py")
           ver = m.group(1)
 
-          # refs/tags/v1.2.3 -> 1.2.3
-          ref = os.environ["GITHUB_REF"]
-          prefix = "refs/tags/v"
-          if not ref.startswith(prefix):
-              print(f"Unexpected GITHUB_REF: {ref}", file=sys.stderr)
-              sys.exit(1)
-          tag = ref[len(prefix):]
-
-          if tag != ver:
-              print(f"Tag ({tag}) != setup.py ({ver})", file=sys.stderr)
-              sys.exit(1)
-
-          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as fh:
-              fh.write(f"tag={tag}\n")
-              fh.write(f"file_ver={ver}\n")
-  build:
-    name: Build wheels on ${{ matrix.os }}
-    needs: version
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, ubuntu-24.04-arm, windows-latest, macos-15-intel, macos-latest]
+atest, macos-15-intel, macos-latest]
     outputs:
       tag: ${{ steps.read_ver.outputs.tag }}
       file_ver: ${{ steps.read_ver.outputs.file_ver }}
