@@ -1,16 +1,6 @@
 //     p
 // 
-#else
-    #define NLOHMANN_JSON_ABI_TAG_LEGACY_DISCARDED_VALUE_COMPARISON
-#endif
-
-#ifndef NLOHMANN_JSON_NAMESPACE_NO_VERSION
-    #define NLOHMANN_JSON_NAMESPACE_NO_VERSION 0
-#endif
-
-// Construct the namespace ABI tags component
-#define NLOHMANN_JSON_ABI_TAGS_CONCAT_EX(a, b) json_abi ## a ## b
-#define NLOHMANN_JSON_ABI_TAGS_CONCAT(a, b) \
+#NLOHMANN_JSON_ABI_TAGS_CONCAT(a, b) \
     NLOHMANN_JSON_ABI_TAGS_CONCAT_EX(a, b)
 
 #define NLOHMANN_JSON_ABI_TAGS                                       \
