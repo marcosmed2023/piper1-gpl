@@ -21,30 +21,7 @@ OPSET_VERSION = 15
 
 
 class TestGenerator(nn.Module):
-    """Test voice that generates silence."""
-
-    def __init__(self) -> None:
-        """Initialize module."""
-        super().__init__()
-
-    def forward(
-        self,
-        text: torch.Tensor,
-        text_lengths: torch.Tensor,
-        scales: torch.Tensor,
-        sid: Optional[torch.Tensor] = None,
-    ) -> torch.Tensor:
-        """Generate silence."""
-        # Use tensors so they will be exported
-        audio = torch.zeros(size=(text.shape[0], 22050))  # 1 sec
-        audio += text_lengths[0]
-        audio += scales[0]
-
-        # Silence
-        audio.zero_()
-
-        return audio.unsqueeze(1)
-
+    """Test voice that generates 
 
 def main() -> None:
     """Export test voice."""
